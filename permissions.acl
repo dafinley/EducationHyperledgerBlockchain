@@ -148,6 +148,13 @@ rule SystemACL {
   action: ALLOW
 }
 
+rule NetworkAdminDefault {
+    description: "Allow all network admins access to all resources"
+    participant: "org.hyperledger.composer.system.*"
+    operation: ALL
+    resource: "composer.education.supply.*"
+    action: ALLOW
+}
 
 rule NetworkAdminSystem {
     description: "Grant business network administrators full access to system resources"
