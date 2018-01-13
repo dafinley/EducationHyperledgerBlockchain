@@ -24,20 +24,15 @@ enum Status{
   o NOTINSCHOOL
 }
 
-concept Coin {
-  o String coinId
-  o String quantity
-}
-
 participant Student identified by studentId extends User {
   o  String studentId
-  o  Coin[] coins
+  o  String coins
 }
 
 participant Alumni identified by alumniId extends User {
   o  String alumniId
   o  String graduationYr
-  o  Coin[] coins
+  o  String coins
 }
 
 participant Community identified by communityId extends User {
@@ -48,7 +43,7 @@ participant School identified by schoolId extends School {
   o  String schoolId
   o  Student[] students
   o  User[] admins
-  o  Coin[] coins
+  o  String coins
 }
 
 participant Regulator identified by regulatorId{
