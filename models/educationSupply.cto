@@ -26,7 +26,14 @@ enum Status{
 
 participant Student identified by studentId extends User {
   o  String studentId
+  o  Status status
   o  String coins
+  o  School school
+}
+
+participant Staff identified by staffId extends User {
+  o  String staffId
+  o  School school
 }
 
 participant Alumni identified by alumniId extends User {
@@ -42,7 +49,7 @@ participant Community identified by communityId extends User {
 participant School identified by schoolId extends School {
   o  String schoolId
   o  Student[] students
-  o  User[] admins
+  o  Staff[] admins
   o  String coins
 }
 
@@ -61,6 +68,13 @@ asset StudentListingContract identified by listingId {
   --> School school
 }
 
+asset StaffListingContract identified by listingId {
+  o String listingId
+  o Staff[] staff
+  --> User owner
+  --> School school
+}
+
 
 // School creates a student listing contract for the list of students
 transaction createStudentListing{
@@ -68,8 +82,13 @@ transaction createStudentListing{
   --> School school
 }
 
+// School creates a staff listing contract for the list of staff
+transaction createStaffListing{
+  o String[] staff
+  --> School school
+}
+
 transaction transferListing{
-  o String ownerType
   --> School newSchool
   --> StudentListingContract studentListing
 }

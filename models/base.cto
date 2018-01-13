@@ -23,7 +23,6 @@ abstract participant User {
   o String lastName  optional
   o String middleName  optional
   o ContactDetails contactDetails optional
-  o Status status optional
 }
 
 abstract participant School {

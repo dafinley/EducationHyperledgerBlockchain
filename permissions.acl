@@ -10,11 +10,27 @@
      action: ALLOW
  }
 
+ rule StaffViewStudentData {
+     description: "Allow staff read access to all student resources"
+     participant: "composer.education.supply.Staff"
+     operation: READ
+     resource: "composer.education.supply.Student"
+     action: ALLOW
+ }
+
 rule SchoolViewAlumniData {
      description: "Allow schools read access to all alumni resources"
      participant: "composer.education.supply.School"
      operation: READ
      resource: "composer.education.supply.Alumni"
+     action: ALLOW
+ }
+
+ rule SchoolViewStaffData {
+     description: "Allow schools read access to all staff resources"
+     participant: "composer.education.supply.School"
+     operation: READ
+     resource: "composer.education.supply.Staff"
      action: ALLOW
  }
 
@@ -62,6 +78,15 @@ rule SchoolViewAlumniData {
      action: ALLOW
  }
 
+  rule StaffCanViewOwnData {
+     description: "Allow staff access to their own data"
+     participant(m): "composer.education.supply.Staff"
+     operation: ALL
+     resource(v): "composer.education.supply.Staff"
+     condition: (v.getIdentifier() == m.getIdentifier())
+     action: ALLOW
+ }
+
   rule RegulatorView {
      description: "Allow regulator read access to all resources"
      participant: "composer.education.supply.Regulator"
@@ -85,6 +110,15 @@ rule StudentListingOwner {
     operation: ALL
     resource(v): "composer.education.supply.StudentListingContract"
     condition: (v.owner.getIdentifier() == m.getIdentifier())
+    action: ALLOW
+}
+
+rule StudentListingOwnerSchool {
+    description: "Allow the school owner of a school listing total access to their listing"
+    participant(m): "composer.education.supply.*"
+    operation: ALL
+    resource(v): "composer.education.supply.StudentListingContract"
+    condition: (v.school.getIdentifier() == m.getIdentifier())
     action: ALLOW
 }
 
