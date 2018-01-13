@@ -1,0 +1,132 @@
+/**
+ * Access Control List for the bidding network.
+ */
+
+ rule SchoolViewStudentData {
+     description: "Allow schools read access to all student resources"
+     participant: "composer.education.supply.School"
+     operation: READ
+     resource: "composer.education.supply.Student"
+     action: ALLOW
+ }
+
+rule SchoolViewAlumniData {
+     description: "Allow schools read access to all alumni resources"
+     participant: "composer.education.supply.School"
+     operation: READ
+     resource: "composer.education.supply.Alumni"
+     action: ALLOW
+ }
+
+ rule SchoolViewCommunityData {
+     description: "Allow schools read access to all community resources"
+     participant: "composer.education.supply.School"
+     operation: READ
+     resource: "composer.education.supply.Community"
+     action: ALLOW
+ }
+
+ rule SchoolCanViewOwnData {
+     description: "Allow schools access to their own data"
+     participant(m): "composer.education.supply.School"
+     operation: ALL
+     resource(v): "composer.education.supply.School"
+     condition: (v.getIdentifier() == m.getIdentifier())
+     action: ALLOW
+ }
+
+ rule AlumniCanViewOwnData {
+     description: "Allow alumni access to their own data"
+     participant(m): "composer.education.supply.Alumni"
+     operation: ALL
+     resource(v): "composer.education.supply.Alumni"
+     condition: (v.getIdentifier() == m.getIdentifier())
+     action: ALLOW
+ }
+
+  rule StudentCanViewOwnData {
+     description: "Allow student access to their own data"
+     participant(m): "composer.education.supply.Student"
+     operation: ALL
+     resource(v): "composer.education.supply.Student"
+     condition: (v.getIdentifier() == m.getIdentifier())
+     action: ALLOW
+ }
+
+ rule CommunityCanViewOwnData {
+     description: "Allow student access to their own data"
+     participant(m): "composer.education.supply.Community"
+     operation: ALL
+     resource(v): "composer.education.supply.Community"
+     condition: (v.getIdentifier() == m.getIdentifier())
+     action: ALLOW
+ }
+
+  rule RegulatorView {
+     description: "Allow regulator read access to all resources"
+     participant: "composer.education.supply.Regulator"
+     operation: READ
+     resource: "composer.education.supply.*"
+     action: ALLOW
+ }
+
+ rule CreateStudentListing{
+     description: "Allow School to create new student listing"
+     participant(m): "composer.education.supply.School"
+     operation: CREATE
+     resource(v): "composer.education.supply.createStudentListing"
+     condition: (v.user.getIdentifier() == m.getIdentifier())
+     action: ALLOW
+ }
+
+rule StudentListingOwner {
+    description: "Allow the owner of a school listing total access to their listing"
+    participant(m): "composer.education.supply.*"
+    operation: ALL
+    resource(v): "composer.education.supply.StudentListingContract"
+    condition: (v.owner.getIdentifier() == m.getIdentifier())
+    action: ALLOW
+}
+
+rule TransferListing{
+      description: "Allow the owner of a student listing to transfer the listing"
+      participant(m): "composer.education.supply.*"
+      operation: CREATE
+      resource(v): "composer.education.supply.transferListing"
+      condition: (v.studentListing.owner.getIdentifier() == m.getIdentifier())
+      action: ALLOW
+}
+
+rule UpdateExemptedList{
+      description: "Allow members to bid for the product"
+      participant(m): "composer.education.supply.Regulator"
+      operation: CREATE
+      resource(v): "composer.education.supply.updateExemptedList"
+      condition: (v.regulator.getIdentifier() == m.getIdentifier())
+      action: ALLOW
+}
+
+rule SystemACL {
+  description:  "System ACL to permit all access"
+  participant: "ANY"
+  operation: ALL
+  resource: "org.hyperledger.composer.system.**"
+  action: ALLOW
+}
+
+rule Default {
+    description: "Allow all participants access to all resources"
+    participant: "ANY"
+    operation: ALL
+    resource: "composer.education.supply.*"
+    action: ALLOW
+}
+
+rule NetworkAdminSystem {
+    description: "Grant business network administrators full access to system resources"
+    participant: "org.hyperledger.composer.system.*"
+    operation: ALL
+    resource: "org.hyperledger.composer.system.**"
+    action: ALLOW
+}
+

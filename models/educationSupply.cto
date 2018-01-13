@@ -1,0 +1,92 @@
+/*
+ * Licensed under the Apache License, Version 2.0 (the "License");
+ * you may not use this file except in compliance with the License.
+ * You may obtain a copy of the License at
+ *
+ * http://www.apache.org/licenses/LICENSE-2.0
+ *
+ * Unless required by applicable law or agreed to in writing, software
+ * distributed under the License is distributed on an "AS IS" BASIS,
+ * WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+ * See the License for the specific language governing permissions and
+ * limitations under the License.
+ */
+
+namespace composer.education.supply
+import composer.base.User
+import composer.base.School
+
+enum Status{
+  o FRESHMEN
+  o SOPHOMORE
+  o JUNIOR
+  o SENIOR
+  o NOTINSCHOOL
+}
+
+concept Coin {
+  o String coinId
+  o String quantity
+}
+
+participant Student identified by studentId extends User {
+  o  String studentId
+  o  Coin[] coins
+}
+
+participant Alumni identified by alumniId extends User {
+  o  String alumniId
+  o  String graduationYr
+  o  Coin[] coins
+}
+
+participant Community identified by communityId extends User {
+  o  String communityId
+}
+
+participant School identified by schoolId extends School {
+  o  String schoolId
+  o  Student[] students
+  o  User[] admins
+  o  Coin[] coins
+}
+
+participant Regulator identified by regulatorId{
+  o String regulatorId
+  o String location
+  o String[] exemptedSchoolIds
+  o String[] exemptedStudentIds
+}
+
+asset StudentListingContract identified by listingId {
+  o String listingId
+  o Status status
+  o Student[] students
+  --> User owner
+  --> School school
+}
+
+
+// School creates a student listing contract for the list of students
+transaction createStudentListing{
+  o String[] students
+  --> School school
+}
+
+transaction transferListing{
+  o String ownerType
+  --> School newSchool
+  --> StudentListingContract studentListing
+}
+
+transaction  checkStudents{
+  --> Regulator regulator
+  --> StudentListingContract studentListing
+}
+
+transaction updateExemptedList{
+  o String[] newExemptedSchoolIds
+  o String[] newExemptedStudentIds
+  --> Regulator regulator
+}
+
