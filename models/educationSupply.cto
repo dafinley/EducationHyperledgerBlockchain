@@ -27,7 +27,7 @@ enum Status{
 participant Student identified by studentId extends User {
   o  String studentId
   o  Status status
-  o  String coins
+  o  Double coins
   o  School school
 }
 
@@ -39,7 +39,7 @@ participant Staff identified by staffId extends User {
 participant Alumni identified by alumniId extends User {
   o  String alumniId
   o  String graduationYr
-  o  String coins
+  o  Double coins
 }
 
 participant Community identified by communityId extends User {
@@ -50,7 +50,7 @@ participant School identified by schoolId extends School {
   o  String schoolId
   o  Student[] students
   o  Staff[] admins
-  o  String coins
+  o  Double coins
 }
 
 participant Regulator identified by regulatorId{
