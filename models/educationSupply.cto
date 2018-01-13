@@ -79,6 +79,7 @@ asset StaffListingContract identified by listingId {
 // School creates a student listing contract for the list of students
 transaction createStudentListing{
   o String[] students
+  --> Staff owner
   --> School school
 }
 
