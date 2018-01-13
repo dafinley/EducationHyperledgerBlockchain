@@ -148,13 +148,6 @@ rule SystemACL {
   action: ALLOW
 }
 
-rule Default {
-    description: "Allow all participants access to all resources"
-    participant: "ANY"
-    operation: ALL
-    resource: "composer.education.supply.*"
-    action: ALLOW
-}
 
 rule NetworkAdminSystem {
     description: "Grant business network administrators full access to system resources"
